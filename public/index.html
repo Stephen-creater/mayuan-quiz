@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>马原重点刷题</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div>
+          <h1>马原重点刷题</h1>
+          <p id="saveStatus">正在读取记录...</p>
+        </div>
+        <div class="summary" id="summary"></div>
+      </header>
+
+      <main class="layout">
+        <aside class="sidebar">
+          <div class="side-title">章节与专题</div>
+          <div id="chapterList" class="chapter-tree"></div>
+        </aside>
+
+        <section class="workspace">
+          <div class="toolbar">
+            <div>
+              <div id="topicTitle" class="topic-title">请选择专题</div>
+              <div id="topicMeta" class="topic-meta"></div>
+            </div>
+            <div class="mode-group" aria-label="刷题模式">
+              <button class="mode is-active" data-mode="normal">重点题</button>
+              <button class="mode" data-mode="wrong">错题</button>
+              <button class="mode" data-mode="marked">标记汇总</button>
+            </div>
+          </div>
+
+          <div id="emptyState" class="empty">
+            左侧选择章节和专题后开始刷题。系统会自动保存每次选择、作答和错题次数。
+          </div>
+
+          <div id="markedSummary" class="marked-summary hidden"></div>
+
+          <article id="questionCard" class="question hidden">
+            <div class="question-nav">
+              <button id="prevQuestionButton" class="secondary" type="button">上一题</button>
+              <input id="questionSlider" type="range" min="1" max="1" value="1" />
+              <button id="jumpNextButton" class="secondary" type="button">下一题</button>
+              <span id="questionPosition">1 / 1</span>
+              <button id="markedListButton" class="secondary hidden" type="button">题目汇总</button>
+            </div>
+            <div class="question-head">
+              <div>
+                <div id="questionLabel" class="question-label"></div>
+                <h2 id="questionStem"></h2>
+              </div>
+              <button id="markButton" class="ghost" type="button">标记</button>
+            </div>
+            <div id="tagLine" class="tags"></div>
+            <form id="answerForm" class="options"></form>
+            <div class="actions">
+              <button id="submitButton" type="button">提交</button>
+              <button id="nextButton" class="secondary hidden" type="button">下一题</button>
+            </div>
+            <div id="resultBox" class="result hidden"></div>
+          </article>
+        </section>
+      </main>
+    </div>
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

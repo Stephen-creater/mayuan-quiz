@@ -1,0 +1,16 @@
+{
+  "name": "mayuan-quiz",
+  "version": "1.0.0",
+  "description": "Local-first Marxism principles quiz app with persistent study progress and topic-focused practice.",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Stephen-creater/mayuan-quiz.git"
+  },
+  "scripts": {
+    "build:data": "node scripts/build-questions.js",
+    "start": "node server.js"
+  }
+}

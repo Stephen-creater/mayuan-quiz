@@ -1,0 +1,18 @@
+# Personal study state
+data/progress.json
+data/history.jsonl
+
+# Runtime logs
+logs/
+*.log
+
+# Local OS/editor files
+.DS_Store
+.vscode/
+.idea/
+
+# Dependencies, if users add any later
+node_modules/
+
+# Temporary files
+*.tmp
