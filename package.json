@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Local-first Marxism principles quiz app with persistent study progress and topic-focused practice.",
   "license": "MIT",
-  "private": true,
   "type": "module",
   "repository": {
     "type": "git",
@@ -11,6 +10,10 @@
   },
   "scripts": {
     "build:data": "node scripts/build-questions.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "deploy": "vercel deploy --prod --yes"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.0.1"
   }
 }

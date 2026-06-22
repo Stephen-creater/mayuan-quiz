@@ -1,8 +1,8 @@
 # 马原重点刷题
 
-一个本地优先的刷题网站，用于按章节和专题练习马克思主义基本原理客观题。项目包含前端页面、Node.js 本地服务、题库数据、作答记录持久化和错题/标记复习流程。
+一个本地优先、也支持在线同步的刷题网站，用于按章节和专题练习马克思主义基本原理客观题。项目包含前端页面、Node.js 本地服务、Vercel 在线函数、题库数据、作答记录持久化和错题/标记复习流程。
 
-这个仓库的目标不是做一个花哨的题库平台，而是保留一套可以直接复用和二次修改的高效备考工具：打开即可刷题，每次作答、切题、标记和错误次数都会被记录到本地文件。
+这个仓库的目标不是做一个花哨的题库平台，而是保留一套可以直接复用和二次修改的高效备考工具：打开即可刷题，每次作答、切题、标记和错误次数都会被记录。本地运行时写入本机文件；部署到 Vercel 后，手机和电脑可以通过同一个网址同步进度。
 
 ## 功能
 
@@ -24,6 +24,7 @@
   - 浏览次数
   - 标记状态
 - 数据不依赖浏览器缓存，刷新页面或重新打开后进度仍在。
+- 可部署为在线网址，使用 Vercel Blob 保存跨设备进度。
 
 ## 当前题库
 
@@ -79,7 +80,7 @@ data/questions.json
 
    任意现代浏览器即可，例如 Chrome、Safari、Edge。
 
-不需要数据库，不需要 Redis，不需要安装前端依赖。这个项目只使用 Node.js 内置模块。
+本地单机刷题不需要数据库，不需要 Redis，不需要安装前端依赖。在线同步需要一个 Vercel 账号和 Vercel Blob 存储。
 
 ## 快速启动
 
@@ -114,9 +115,126 @@ PORT=3000 npm start
 http://localhost:3000
 ```
 
+## 在线同步版本
+
+如果你希望手机和电脑共用同一份进度，推荐部署到 Vercel。部署后：
+
+- 题库和页面通过一个在线网址访问。
+- 进度、错题次数、标记题、浏览位置写入 Vercel Blob。
+- 手机和电脑第一次打开时输入同一个同步口令，之后浏览器会记住。
+- 公开网址不会直接暴露个人进度；没有同步口令时，进度接口会拒绝读写。
+
+当前项目已经支持这些接口：
+
+```text
+GET  /api/questions          # 公开读取题库
+GET  /api/state              # 读取进度，需要同步口令
+POST /api/event              # 写入一次操作，需要同步口令
+GET  /api/history            # 读取操作历史，需要同步口令
+POST /api/import-progress    # 导入本地进度，需要同步口令
+```
+
+### Vercel 部署前置
+
+需要准备：
+
+1. Vercel 账号。
+2. Vercel CLI 登录状态：
+
+   ```bash
+   npx vercel whoami
+   ```
+
+   如果没有登录：
+
+   ```bash
+   npx vercel login
+   ```
+
+3. 安装依赖：
+
+   ```bash
+   npm install
+   ```
+
+### 创建并连接项目
+
+```bash
+npx vercel link --yes --project mayuan-quiz
+```
+
+如果你想换项目名，把 `mayuan-quiz` 改成自己的名字。
+
+### 创建云端进度存储
+
+```bash
+npx vercel blob create-store mayuan-quiz-progress --access private --yes --environment production --environment preview
+```
+
+这一步会创建一个私有 Blob 存储，并把 `BLOB_READ_WRITE_TOKEN` 自动写入 Vercel 项目环境变量。不要把这个 token 写进前端代码或提交到 GitHub。
+
+### 设置同步口令
+
+自己生成一个口令，例如：
+
+```bash
+node -e "console.log('mayuan-' + require('crypto').randomBytes(12).toString('base64url'))"
+```
+
+然后分别写入 Vercel 环境变量：
+
+```bash
+npx vercel env add SYNC_TOKEN production --value "<你的同步口令>" --yes --sensitive
+npx vercel env add SYNC_TOKEN preview --value "<你的同步口令>" --yes --sensitive
+npx vercel env add SYNC_TOKEN development --value "<你的同步口令>" --yes --no-sensitive
+```
+
+### 部署
+
+```bash
+npm run deploy
+```
+
+部署成功后，Vercel 会输出一个生产网址，例如：
+
+```text
+https://your-project.vercel.app
+```
+
+### 导入已有本地进度
+
+如果你本地已经刷过题，需要把 `data/progress.json` 导入云端：
+
+```bash
+curl -X POST "https://your-project.vercel.app/api/import-progress" \
+  -H "Content-Type: application/json" \
+  -H "X-Sync-Token: <你的同步口令>" \
+  --data-binary @data/progress.json
+```
+
+导入后再打开线上网址，页面顶部的“已提交 / 错误 / 标记”数字应该和本地一致。
+
+### 手机和电脑怎么用
+
+推荐方式：
+
+1. 手机和电脑都打开同一个 Vercel 网址。
+2. 第一次进入时输入同一个同步口令。
+3. 后续作答、标记、错题次数都会写入云端。
+
+也可以临时用下面这种方式自动写入口令：
+
+```text
+https://your-project.vercel.app?sync=<你的同步口令>
+```
+
+页面会把口令保存到当前浏览器，然后自动移除地址栏里的 `sync` 参数。不要把带口令的链接发到公开地方。
+
+注意：`http://localhost:5177` 仍然是本地单机进度。要实现手机和电脑同步，请两端都使用线上 Vercel 网址。
+
 ## 数据存储
 
-项目运行后会在 `data/` 目录里写入本地进度文件：
+本地服务运行后会在 `data/` 目录里写入本地进度文件：
 
 ```text
 data/progress.json
@@ -129,6 +247,8 @@ data/history.jsonl
 - `data/history.jsonl`：每次操作的事件流水，例如切换专题、切换模式、选择选项、提交答案。
 
 这两个文件属于个人学习记录，默认被 `.gitignore` 忽略，不建议提交到公开仓库。
+
+在线部署后，云端进度存放在 Vercel Blob 中，不会写回仓库。需要把本地进度迁移到云端时，使用上面的 `/api/import-progress`。
 
 仓库中提供了一个空模板：
 
@@ -242,6 +362,13 @@ scripts/build-questions.js
 ├── data/
 │   ├── questions.json            # 公开题库
 │   └── progress.example.json     # 空进度模板
+├── api/
+│   ├── _shared.mjs               # Vercel 云端存储与进度计算
+│   ├── event.mjs                 # 线上写入作答/标记/浏览事件
+│   ├── history.mjs               # 线上读取历史
+│   ├── import-progress.mjs       # 本地进度导入云端
+│   ├── questions.mjs             # 线上读取题库
+│   └── state.mjs                 # 线上读取进度
 ├── public/
 │   ├── app.js                    # 前端交互逻辑
 │   ├── index.html                # 页面结构
@@ -249,6 +376,7 @@ scripts/build-questions.js
 ├── scripts/
 │   └── build-questions.js        # 从 CSV 生成 questions.json
 ├── server.js                     # 本地 Node.js 服务
+├── vercel.json                   # Vercel 部署配置
 ├── package.json
 ├── .gitignore
 └── README.md
@@ -260,7 +388,8 @@ scripts/build-questions.js
 
 - 想改界面：`public/index.html`、`public/styles.css`
 - 想改交互：`public/app.js`
-- 想改存储逻辑：`server.js`
+- 想改本地存储逻辑：`server.js`
+- 想改线上同步逻辑：`api/_shared.mjs` 和 `api/*.mjs`
 - 想改筛题规则：`scripts/build-questions.js`
 - 想换题库：重新生成或替换 `data/questions.json`
 
@@ -297,6 +426,12 @@ PORT=3000 npm start
 ### 4. 为什么不把进度上传到 GitHub
 
 因为进度文件是个人学习记录，里面包含作答历史、错题、标记题和浏览位置。公开仓库只应包含代码和可复用题库，不应包含个人记录。
+
+### 5. 手机和电脑为什么没有同步
+
+确认两端是否都在使用线上 Vercel 网址。如果一端使用 `localhost`，另一端使用线上网址，它们就是两份记录。
+
+还要确认两端输入的是同一个同步口令。口令错误时，页面会要求重新输入。
 
 ## 可选：macOS 后台常驻
 

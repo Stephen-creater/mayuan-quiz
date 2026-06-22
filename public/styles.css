@@ -382,7 +382,60 @@ h2 {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
+}
+
+.sync-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(247, 247, 244, 0.92);
+}
+
+.sync-box {
+  width: min(360px, 100%);
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.sync-box h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.sync-box p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.sync-box input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 9px 10px;
+}
+
+.sync-box button {
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 9px 12px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+}
+
+.sync-error {
+  min-height: 18px;
+  color: var(--bad);
+  font-size: 12px;
 }
 
 @media (max-width: 820px) {
@@ -425,6 +478,24 @@ h2 {
 
   .workspace {
     padding: 16px;
+  }
+
+  .mode-group {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .mode {
+    padding: 8px 6px;
+  }
+
+  .question,
+  .empty {
+    padding: 14px;
+  }
+
+  h2 {
+    font-size: 18px;
   }
 }
 

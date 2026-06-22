@@ -27,6 +27,10 @@ const els = {
   topicMeta: $('topicMeta'),
   emptyState: $('emptyState'),
   markedSummary: $('markedSummary'),
+  syncGate: $('syncGate'),
+  syncTokenInput: $('syncTokenInput'),
+  syncTokenButton: $('syncTokenButton'),
+  syncTokenError: $('syncTokenError'),
   questionCard: $('questionCard'),
   prevQuestionButton: $('prevQuestionButton'),
   jumpNextButton: $('jumpNextButton'),
@@ -43,11 +47,64 @@ const els = {
   markButton: $('markButton'),
 };
 
-async function api(path, options) {
-  const response = await fetch(path, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options,
+const syncTokenKey = 'mayuanSyncToken';
+let syncTokenPromise = null;
+
+function readTokenFromUrl() {
+  const url = new URL(window.location.href);
+  const token = url.searchParams.get('sync');
+  if (!token) return;
+  localStorage.setItem(syncTokenKey, token);
+  url.searchParams.delete('sync');
+  window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+}
+
+function syncToken() {
+  return localStorage.getItem(syncTokenKey) || '';
+}
+
+function requestSyncToken() {
+  if (syncTokenPromise) return syncTokenPromise;
+  els.syncGate.classList.remove('hidden');
+  els.syncTokenError.textContent = '';
+  setTimeout(() => els.syncTokenInput.focus(), 0);
+  syncTokenPromise = new Promise((resolve) => {
+    const submit = () => {
+      const token = els.syncTokenInput.value.trim();
+      if (!token) {
+        els.syncTokenError.textContent = '请输入同步口令。';
+        return;
+      }
+      localStorage.setItem(syncTokenKey, token);
+      els.syncGate.classList.add('hidden');
+      els.syncTokenInput.value = '';
+      syncTokenPromise = null;
+      resolve(token);
+    };
+    els.syncTokenButton.onclick = submit;
+    els.syncTokenInput.onkeydown = (event) => {
+      if (event.key === 'Enter') submit();
+    };
   });
+  return syncTokenPromise;
+}
+
+async function api(path, options = {}, retries = 2) {
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(options.headers || {}),
+  };
+  const token = syncToken();
+  if (token) headers['X-Sync-Token'] = token;
+  const response = await fetch(path, {
+    ...options,
+    headers,
+  });
+  if (response.status === 401 && retries > 0) {
+    localStorage.removeItem(syncTokenKey);
+    await requestSyncToken();
+    return api(path, options, retries - 1);
+  }
   if (!response.ok) throw new Error(await response.text());
   return response.json();
 }
@@ -572,6 +629,7 @@ function renderAll() {
 }
 
 async function init() {
+  readTokenFromUrl();
   const [questionData, progress] = await Promise.all([
     api('/api/questions'),
     api('/api/state'),

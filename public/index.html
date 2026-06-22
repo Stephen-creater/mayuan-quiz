@@ -68,6 +68,15 @@
         </section>
       </main>
     </div>
+    <div id="syncGate" class="sync-gate hidden" aria-live="polite">
+      <div class="sync-box">
+        <h2>输入同步口令</h2>
+        <p>手机和电脑使用同一个口令，进度会保存到同一个在线记录里。</p>
+        <input id="syncTokenInput" type="password" autocomplete="current-password" placeholder="同步口令" />
+        <button id="syncTokenButton" type="button">进入刷题</button>
+        <div id="syncTokenError" class="sync-error"></div>
+      </div>
+    </div>
     <script src="/app.js" type="module"></script>
   </body>
 </html>
