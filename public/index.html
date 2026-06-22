@@ -10,16 +10,23 @@
   <body>
     <div class="app">
       <header class="topbar">
-        <div>
+        <div class="brand-block">
           <h1>马原重点刷题</h1>
           <p id="saveStatus">正在读取记录...</p>
         </div>
+        <button id="mobileMenuButton" class="mobile-menu-button" type="button" aria-controls="sidebar" aria-expanded="false">
+          章节
+        </button>
         <div class="summary" id="summary"></div>
       </header>
 
       <main class="layout">
-        <aside class="sidebar">
-          <div class="side-title">章节与专题</div>
+        <button id="sidebarOverlay" class="sidebar-overlay hidden" type="button" aria-label="关闭章节与专题"></button>
+        <aside id="sidebar" class="sidebar" aria-label="章节与专题">
+          <div class="sidebar-heading">
+            <div class="side-title">章节与专题</div>
+            <button id="mobileCloseSidebar" class="mobile-close-sidebar" type="button">收起</button>
+          </div>
           <div id="chapterList" class="chapter-tree"></div>
         </aside>
 

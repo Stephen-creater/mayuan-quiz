@@ -61,6 +61,11 @@ h1 {
   font-size: 13px;
 }
 
+.mobile-menu-button,
+.mobile-close-sidebar {
+  display: none;
+}
+
 .summary {
   min-width: 260px;
   text-align: right;
@@ -83,6 +88,14 @@ h1 {
   padding: 18px 0;
   background: #fbfbf9;
   overflow: auto;
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
+.sidebar-heading {
+  display: block;
 }
 
 .side-title {
@@ -439,63 +452,314 @@ h2 {
 }
 
 @media (max-width: 820px) {
-  .topbar,
-  .toolbar,
-  .question-head {
-    flex-direction: column;
+  body {
+    font-size: 16px;
   }
 
-  .question-nav {
-    grid-template-columns: 1fr 1fr;
+  body.sidebar-open {
+    overflow: hidden;
   }
 
-  .question-nav input[type="range"],
-  #questionPosition {
-    grid-column: 1 / -1;
+  .topbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 6px 12px;
+    padding: 14px 16px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
   }
 
-  #questionPosition {
-    text-align: left;
-  }
-
-  .summary {
-    text-align: left;
+  .brand-block {
     min-width: 0;
   }
 
+  h1 {
+    font-size: 22px;
+  }
+
+  .topbar p {
+    font-size: 12px;
+  }
+
+  .mobile-menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 58px;
+    min-height: 42px;
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .summary {
+    grid-column: 1 / -1;
+    min-width: 0;
+    text-align: left;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
   .layout {
-    grid-template-columns: 1fr;
-    gap: 0;
-    padding: 0;
+    display: block;
+    min-height: auto;
+    padding: 0 12px 84px;
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 14;
+    border: 0;
+    background: rgba(12, 18, 15, 0.34);
+    cursor: pointer;
+  }
+
+  .sidebar-overlay.hidden {
+    display: none !important;
   }
 
   .sidebar {
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-    max-height: 42vh;
-    padding: 16px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 15;
+    width: min(88vw, 360px);
+    max-height: none;
+    padding: 14px 14px 22px;
+    border-right: 1px solid var(--line);
+    border-bottom: 0;
+    background: #fbfbf9;
+    box-shadow: 18px 0 40px rgba(0, 0, 0, 0.16);
+    transform: translateX(-105%);
+    transition: transform 180ms ease;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body.sidebar-open .sidebar {
+    transform: translateX(0);
+  }
+
+  .sidebar-heading {
+    position: sticky;
+    top: -14px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 0 10px;
+    background: #fbfbf9;
+  }
+
+  .side-title {
+    margin: 0;
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .mobile-close-sidebar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: var(--panel);
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .chapter-tree {
+    gap: 8px;
+  }
+
+  .chapter-node {
+    gap: 8px;
+  }
+
+  .chapter-toggle,
+  .topic-item {
+    min-height: 62px;
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+
+  .chapter-toggle strong {
+    font-size: 15px;
+  }
+
+  .topic-item strong {
+    font-size: 14px;
+  }
+
+  .topic-children {
+    margin-left: 10px;
+    padding-left: 10px;
   }
 
   .workspace {
-    padding: 16px;
+    padding: 18px 0 32px;
+  }
+
+  .toolbar {
+    display: grid;
+    gap: 12px;
+    align-items: stretch;
+    margin-bottom: 12px;
+  }
+
+  .topic-title {
+    font-size: 22px;
+    line-height: 1.25;
+  }
+
+  .topic-meta {
+    font-size: 13px;
+    line-height: 1.45;
   }
 
   .mode-group {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .mode,
+  .secondary,
+  .ghost,
+  #submitButton,
+  #nextButton {
+    min-height: 46px;
+    border-radius: 10px;
+    padding: 10px 12px;
   }
 
   .mode {
-    padding: 8px 6px;
+    font-weight: 700;
   }
 
-  .question,
-  .empty {
+  .empty,
+  .question {
+    border-radius: 12px;
     padding: 14px;
+  }
+
+  .question-nav {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  #prevQuestionButton {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  #questionPosition {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 68px;
+    text-align: center;
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  #jumpNextButton {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .question-nav input[type="range"] {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    height: 34px;
+    margin: 0;
+  }
+
+  #markedListButton {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+
+  .question-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 12px;
+  }
+
+  .question-label {
+    font-size: 12px;
+    line-height: 1.45;
+    margin-bottom: 6px;
   }
 
   h2 {
     font-size: 18px;
+    line-height: 1.48;
+  }
+
+  .tags {
+    margin: 10px 0;
+  }
+
+  .tag {
+    font-size: 11px;
+  }
+
+  .options {
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .option {
+    min-height: 52px;
+    grid-template-columns: 26px 1fr;
+    border-radius: 10px;
+    padding: 12px;
+  }
+
+  .option input {
+    width: 18px;
+    height: 18px;
+    margin-top: 3px;
+  }
+
+  .actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    display: grid;
+    margin: 16px -14px -14px;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0), var(--panel) 26%);
+  }
+
+  #submitButton,
+  #nextButton {
+    width: 100%;
+    font-weight: 700;
+  }
+
+  .result {
+    padding: 14px;
+  }
+
+  .result h3 {
+    font-size: 16px;
   }
 }
 

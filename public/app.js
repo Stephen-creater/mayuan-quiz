@@ -15,6 +15,7 @@ const state = {
   modeContexts: {},
   expandedChapters: new Set(),
   markedListOpen: true,
+  sidebarOpen: false,
 };
 
 const $ = (id) => document.getElementById(id);
@@ -22,6 +23,9 @@ const $ = (id) => document.getElementById(id);
 const els = {
   saveStatus: $('saveStatus'),
   summary: $('summary'),
+  mobileMenuButton: $('mobileMenuButton'),
+  mobileCloseSidebar: $('mobileCloseSidebar'),
+  sidebarOverlay: $('sidebarOverlay'),
   chapterList: $('chapterList'),
   topicTitle: $('topicTitle'),
   topicMeta: $('topicMeta'),
@@ -129,6 +133,21 @@ function progressOf(id) {
     views: 0,
     marked: false,
   };
+}
+
+function isMobileLayout() {
+  return window.matchMedia('(max-width: 820px)').matches;
+}
+
+function setSidebarOpen(open) {
+  state.sidebarOpen = open;
+  document.body.classList.toggle('sidebar-open', open);
+  els.mobileMenuButton?.setAttribute('aria-expanded', String(open));
+  els.sidebarOverlay?.classList.toggle('hidden', !open);
+}
+
+function closeSidebarOnMobile() {
+  if (isMobileLayout()) setSidebarOpen(false);
 }
 
 function isValidMode(mode) {
@@ -332,6 +351,7 @@ function renderChapters() {
           rememberModeContext();
           await record('select-topic', cursorPayload({ chapter: state.currentChapter, topic }));
           renderAll();
+          closeSidebarOnMobile();
         });
         children.appendChild(topicButton);
       }
@@ -660,6 +680,15 @@ els.questionSlider.addEventListener('change', () => {
 });
 els.markButton.addEventListener('click', toggleMark);
 els.markedListButton.addEventListener('click', openMarkedSummary);
+els.mobileMenuButton.addEventListener('click', () => setSidebarOpen(true));
+els.mobileCloseSidebar.addEventListener('click', () => setSidebarOpen(false));
+els.sidebarOverlay.addEventListener('click', () => setSidebarOpen(false));
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') setSidebarOpen(false);
+});
+window.addEventListener('resize', () => {
+  if (!isMobileLayout()) setSidebarOpen(false);
+});
 
 init().catch((error) => {
   els.emptyState.textContent = `加载失败：${error.message}`;
