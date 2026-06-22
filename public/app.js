@@ -94,9 +94,7 @@ function listForMode(mode = state.mode, chapter = state.currentChapter, topic = 
       });
   }
   if (mode === 'wrong') {
-    list = list
-      .filter((q) => progressOf(q.id).wrongCount > 0)
-      .sort((a, b) => progressOf(b.id).wrongCount - progressOf(a.id).wrongCount);
+    list = list.filter((q) => progressOf(q.id).wrongCount > 0);
   }
   return list;
 }
