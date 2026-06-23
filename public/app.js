@@ -53,6 +53,10 @@ const els = {
 
 const syncTokenKey = 'mayuanSyncToken';
 let syncTokenPromise = null;
+let saveQueue = Promise.resolve();
+let pendingSaves = 0;
+let latestSaveSeq = 0;
+let lastSavedAt = '';
 
 function readTokenFromUrl() {
   const url = new URL(window.location.href);
@@ -100,10 +104,14 @@ async function api(path, options = {}, retries = 2) {
   };
   const token = syncToken();
   if (token) headers['X-Sync-Token'] = token;
-  const response = await fetch(path, {
+  const requestOptions = {
     ...options,
     headers,
-  });
+  };
+  if (requestOptions.method && requestOptions.method !== 'GET' && requestOptions.keepalive === undefined) {
+    requestOptions.keepalive = true;
+  }
+  const response = await fetch(path, requestOptions);
   if (response.status === 401 && retries > 0) {
     localStorage.removeItem(syncTokenKey);
     await requestSyncToken();
@@ -113,16 +121,20 @@ async function api(path, options = {}, retries = 2) {
   return response.json();
 }
 
-async function record(type, payload = {}, questionId = null) {
-  const result = await api('/api/event', {
-    method: 'POST',
-    body: JSON.stringify({ type, payload, questionId }),
-  });
-  state.progress = result.progress;
-  const time = new Date(result.event.at).toLocaleTimeString('zh-CN', { hour12: false });
-  els.saveStatus.textContent = `已保存 ${time}`;
+function record(type, payload = {}, questionId = null) {
+  const event = {
+    at: new Date().toISOString(),
+    type,
+    questionId,
+    payload,
+  };
+  const question = state.questions.find((item) => item.id === questionId);
+  applyLocalEvent(event, question);
+  if (!['select-option', 'view-question'].includes(type)) {
+    enqueueSave(event);
+  }
   renderSummary();
-  return result.event;
+  return event;
 }
 
 function progressOf(id) {
@@ -267,6 +279,116 @@ function cursorPayload(extra = {}) {
     cursorKey: cursorKey(),
     index: Math.max(0, state.index),
   };
+}
+
+function rememberUiStateLocal(event) {
+  state.progress.ui ||= {};
+  state.progress.ui.cursors ||= {};
+  state.progress.ui.modeContexts ||= {};
+  const payload = event.payload || {};
+  const key = payload.cursorKey;
+  const index = Number(payload.index);
+  if (typeof key === 'string' && key && Number.isInteger(index) && index >= 0) {
+    state.progress.ui.cursors[key] = index;
+  }
+
+  const active = state.progress.ui.active || {};
+  for (const field of ['chapter', 'topic', 'mode']) {
+    if (typeof payload[field] === 'string' && payload[field]) active[field] = payload[field];
+  }
+  if (Object.keys(active).length) state.progress.ui.active = active;
+
+  if (typeof payload.mode === 'string' && payload.mode && payload.mode !== 'marked') {
+    const modeContext = state.progress.ui.modeContexts[payload.mode] || {};
+    if (typeof payload.chapter === 'string' && payload.chapter) modeContext.chapter = payload.chapter;
+    if (typeof payload.topic === 'string' && payload.topic) modeContext.topic = payload.topic;
+    if (Object.keys(modeContext).length) state.progress.ui.modeContexts[payload.mode] = modeContext;
+  }
+}
+
+function applyLocalEvent(event, question) {
+  state.progress.questions ||= {};
+  rememberUiStateLocal(event);
+  const id = event.questionId;
+  if (!id) {
+    state.progress.updatedAt = event.at;
+    return;
+  }
+
+  const item = state.progress.questions[id] || {
+    attempts: 0,
+    correctAttempts: 0,
+    wrongCount: 0,
+    views: 0,
+    lastAnswer: null,
+    lastCorrect: null,
+    lastAt: null,
+    marked: false,
+    markedAt: null,
+  };
+
+  if (event.type === 'view-question') {
+    item.views += 1;
+    item.lastAt = event.at;
+  }
+
+  if (event.type === 'answer-question' && question) {
+    const answer = selectedToAnswer(question, event.payload?.selected);
+    const correct = answer === question.answer;
+    item.attempts += 1;
+    item.correctAttempts += correct ? 1 : 0;
+    item.wrongCount += correct ? 0 : 1;
+    item.lastAnswer = answer;
+    item.lastCorrect = correct;
+    item.lastAt = event.at;
+    event.correct = correct;
+    event.expected = question.answer;
+  }
+
+  if (event.type === 'toggle-mark') {
+    item.marked = Boolean(event.payload?.marked);
+    item.markedAt = item.marked ? event.at : null;
+    item.lastAt = event.at;
+  }
+
+  state.progress.questions[id] = item;
+  state.progress.updatedAt = event.at;
+}
+
+function enqueueSave(event) {
+  pendingSaves += 1;
+  const seq = ++latestSaveSeq;
+  els.saveStatus.textContent = '保存中...';
+  saveQueue = saveQueue
+    .catch(() => {})
+    .then(async () => {
+      const result = await api('/api/event', {
+        method: 'POST',
+        body: JSON.stringify({
+          type: event.type,
+          payload: event.payload,
+          questionId: event.questionId,
+        }),
+      });
+      lastSavedAt = result.event.at;
+      if (seq === latestSaveSeq) {
+        state.progress = result.progress;
+        renderSummary();
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      els.saveStatus.textContent = '同步失败，保持页面打开后重试';
+    })
+    .finally(() => {
+      pendingSaves -= 1;
+      if (pendingSaves > 0) {
+        els.saveStatus.textContent = `保存中...${pendingSaves}`;
+      } else if (lastSavedAt) {
+        const time = new Date(lastSavedAt).toLocaleTimeString('zh-CN', { hour12: false });
+        els.saveStatus.textContent = `已保存 ${time}`;
+      }
+    });
 }
 
 function groupBy(items, key) {
