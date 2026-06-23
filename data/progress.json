@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-23T06:00:22.664Z",
+  "updatedAt": "2026-06-23T06:00:33.951Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -4482,6 +4482,16 @@
       "lastAnswer": "B",
       "lastCorrect": true,
       "lastAt": "2026-06-23T06:00:17.944Z",
+      "marked": false
+    },
+    "社会主义的发展及其规律__社会主义发展道路的多样性__单选题75": {
+      "attempts": 1,
+      "correctAttempts": 0,
+      "wrongCount": 1,
+      "views": 0,
+      "lastAnswer": "B",
+      "lastCorrect": false,
+      "lastAt": "2026-06-23T06:00:33.951Z",
       "marked": false
     }
   },
