@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-23T05:50:24.235Z",
+  "updatedAt": "2026-06-23T05:51:44.691Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -4338,6 +4338,16 @@
       "lastAnswer": "D",
       "lastCorrect": true,
       "lastAt": "2026-06-23T05:50:20.558Z",
+      "marked": false
+    },
+    "资本主义的发展及其趋势__垄断资本主义和国家垄断资本主义__单选题441": {
+      "attempts": 1,
+      "correctAttempts": 0,
+      "wrongCount": 1,
+      "views": 0,
+      "lastAnswer": "C",
+      "lastCorrect": false,
+      "lastAt": "2026-06-23T05:51:44.691Z",
       "marked": false
     }
   },
