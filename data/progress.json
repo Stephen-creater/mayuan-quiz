@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-23T05:48:14.475Z",
+  "updatedAt": "2026-06-23T05:49:03.972Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -4307,6 +4307,16 @@
       "lastAnswer": "D",
       "lastCorrect": true,
       "lastAt": "2026-06-23T05:47:16.260Z",
+      "marked": false
+    },
+    "资本主义的本质及规律__商品、货币和劳动价值论__单选题315": {
+      "attempts": 1,
+      "correctAttempts": 0,
+      "wrongCount": 1,
+      "views": 0,
+      "lastAnswer": "D",
+      "lastCorrect": false,
+      "lastAt": "2026-06-23T05:49:03.972Z",
       "marked": false
     }
   },
