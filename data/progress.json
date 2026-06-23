@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-23T05:56:06.452Z",
+  "updatedAt": "2026-06-23T05:56:16.495Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -4420,6 +4420,16 @@
       "lastAnswer": "A",
       "lastCorrect": true,
       "lastAt": "2026-06-23T05:56:02.219Z",
+      "marked": false
+    },
+    "社会主义的发展及其规律__空想社会主义、科学社会主义和无产阶级革命__单选题384": {
+      "attempts": 1,
+      "correctAttempts": 0,
+      "wrongCount": 1,
+      "views": 0,
+      "lastAnswer": "A",
+      "lastCorrect": false,
+      "lastAt": "2026-06-23T05:56:16.495Z",
       "marked": false
     }
   },
