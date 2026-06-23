@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-23T03:00:25.057Z",
+  "updatedAt": "2026-06-23T03:00:37.605Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -3801,13 +3801,13 @@
       "marked": false
     },
     "人类社会及其发展规律__生产力和生产关系__单选题435": {
-      "attempts": 1,
-      "correctAttempts": 0,
+      "attempts": 2,
+      "correctAttempts": 1,
       "wrongCount": 1,
       "views": 3,
-      "lastAnswer": "A",
-      "lastCorrect": false,
-      "lastAt": "2026-06-23T02:31:40.656Z",
+      "lastAnswer": "B",
+      "lastCorrect": true,
+      "lastAt": "2026-06-23T03:00:37.605Z",
       "marked": true,
       "markedAt": "2026-06-23T02:31:35.504Z"
     },
