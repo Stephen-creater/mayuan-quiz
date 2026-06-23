@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-23T02:48:16.920Z",
+  "updatedAt": "2026-06-23T02:50:56.598Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -3907,7 +3907,7 @@
     "active": {
       "chapter": "人类社会及其发展规律",
       "topic": "生产力和生产关系",
-      "mode": "normal"
+      "mode": "wrong"
     }
   }
 }
