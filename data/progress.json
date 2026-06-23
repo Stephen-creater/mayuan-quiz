@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-23T04:56:14.032Z",
+  "updatedAt": "2026-06-23T04:56:24.957Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -4085,6 +4085,16 @@
       "lastAnswer": "C",
       "lastCorrect": true,
       "lastAt": "2026-06-23T04:56:11.127Z",
+      "marked": false
+    },
+    "人类社会及其发展规律__人民群众、个人作用和群众路线__单选题134": {
+      "attempts": 1,
+      "correctAttempts": 1,
+      "wrongCount": 0,
+      "views": 0,
+      "lastAnswer": "B",
+      "lastCorrect": true,
+      "lastAt": "2026-06-23T04:56:24.957Z",
       "marked": false
     }
   },
