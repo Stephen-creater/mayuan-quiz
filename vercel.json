@@ -5,7 +5,7 @@
   "outputDirectory": "public",
   "functions": {
     "api/*.mjs": {
-      "includeFiles": "data/questions.json"
+      "includeFiles": "{data/questions.json,data/progress.json}"
     }
   }
 }

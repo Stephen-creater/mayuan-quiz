@@ -13,7 +13,9 @@ export default async function handler(req, res) {
     payload: body.payload || {},
   };
   const progress = updateProgress(await readProgress(), event, question);
-  await writeProgress(progress);
-  await recordHistory(event);
+  if (!['select-option', 'view-question'].includes(event.type)) {
+    await writeProgress(progress);
+    await recordHistory(event);
+  }
   return sendJson(res, 200, { ok: true, event, progress });
 }

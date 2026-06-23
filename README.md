@@ -37,10 +37,12 @@ data/questions.json
 当前版本包含：
 
 - 原始客观题：1146 道
-- 筛选后重点题：659 道
-- 剔除低优先级题：487 道
+- 第一轮筛选后重点题：659 道
+- 当前单选冲刺题库：460 道
+- 第一轮剔除低优先级题：487 道
+- 当前进度节点后追加剔除多选/判断：199 道
 
-筛选后的重点题保留了以下类型：
+第一轮筛选后的重点题保留了以下类型：
 
 - 错误判断题。
 - 多选非全选题。
@@ -53,6 +55,8 @@ data/questions.json
 - 明显全选且没有硬记价值的多选题。
 - 普通正确判断题。
 - 题干和选项直接对应、区分度较低的题。
+
+当前版本针对期末选择题“只考单选”的复习策略做了二次裁剪：以 `人类社会及其发展规律 / 生产力和生产关系 / 多选题148` 为进度节点，节点之前的题目全部保留；节点之后只保留单选题。这样已经做过的多选、判断、错题和标记仍然保留，后续新刷题集中到单选。
 
 注意：筛选逻辑服务于“最短时间抓重点”，不是说被剔除题永远不会考。需要更稳妥时，可以基于原始 CSV 重新生成或扩展题库。
 
@@ -120,7 +124,7 @@ http://localhost:3000
 如果你希望手机和电脑共用同一份进度，推荐部署到 Vercel。部署后：
 
 - 题库和页面通过一个在线网址访问。
-- 进度、错题次数、标记题、浏览位置写入 Vercel Blob。
+- 进度、错题次数、标记题、浏览位置写入 GitHub 仓库中的 `data/progress.json`。
 - 手机和电脑第一次打开时输入同一个同步口令，之后浏览器会记住。
 - 公开网址不会直接暴露个人进度；没有同步口令时，进度接口会拒绝读写。
 
@@ -167,11 +171,16 @@ npx vercel link --yes --project mayuan-quiz
 
 ### 创建云端进度存储
 
+当前项目使用 GitHub 作为短周期进度备份和同步后端。你需要给 Vercel 配一个有仓库写入权限的 GitHub token：
+
 ```bash
-npx vercel blob create-store mayuan-quiz-progress --access private --yes --environment production --environment preview
+npx vercel env add GITHUB_PROGRESS_TOKEN production --value "<GitHub token>" --yes --sensitive
+npx vercel env add GITHUB_PROGRESS_OWNER production --value "<GitHub 用户名>" --yes --no-sensitive
+npx vercel env add GITHUB_PROGRESS_REPO production --value "<仓库名>" --yes --no-sensitive
+npx vercel env add GITHUB_PROGRESS_BRANCH production --value "main" --yes --no-sensitive
 ```
 
-这一步会创建一个私有 Blob 存储，并把 `BLOB_READ_WRITE_TOKEN` 自动写入 Vercel 项目环境变量。不要把这个 token 写进前端代码或提交到 GitHub。
+token 只放在 Vercel 后端环境变量里，不要写进前端代码，不要提交到 GitHub。
 
 ### 设置同步口令
 
@@ -246,9 +255,9 @@ data/history.jsonl
 - `data/progress.json`：当前每道题的进度快照，例如作答次数、错误次数、标记状态、当前位置。
 - `data/history.jsonl`：每次操作的事件流水，例如切换专题、切换模式、选择选项、提交答案。
 
-这两个文件属于个人学习记录，默认被 `.gitignore` 忽略，不建议提交到公开仓库。
+这两个文件属于个人学习记录。当前仓库按使用者要求提交了 `data/progress.json` 作为考试前进度备份；如果你复用本项目且不想公开自己的进度，可以继续让 `.gitignore` 忽略它，或删除仓库里的个人进度文件。
 
-在线部署后，云端进度存放在 Vercel Blob 中，不会写回仓库。需要把本地进度迁移到云端时，使用上面的 `/api/import-progress`。
+在线部署后，云端进度会写回 GitHub 仓库的 `data/progress.json`。需要把本地进度迁移到云端时，使用上面的 `/api/import-progress`。
 
 仓库中提供了一个空模板：
 
@@ -421,11 +430,11 @@ PORT=3000 npm start
 
 检查 `data/progress.json` 是否存在。这个文件保存学习进度，不要删除。
 
-如果你是从 GitHub 重新 clone 的仓库，默认不会带有别人的 `progress.json`，第一次运行会自动创建空进度。
+如果你是从 GitHub 重新 clone 的仓库，可能会带有仓库作者提交的 `progress.json`。复用时可以删除它，第一次运行会自动创建空进度。
 
-### 4. 为什么不把进度上传到 GitHub
+### 4. 为什么这个仓库包含进度文件
 
-因为进度文件是个人学习记录，里面包含作答历史、错题、标记题和浏览位置。公开仓库只应包含代码和可复用题库，不应包含个人记录。
+通常不建议把个人进度提交到公开仓库。但这个项目是短周期期末复习工具，当前使用者明确要求把进度上传到 GitHub 做备份，所以仓库里保留了 `data/progress.json` 和 `data/progress-backups/`。
 
 ### 5. 手机和电脑为什么没有同步
 

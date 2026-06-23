@@ -4,10 +4,12 @@ import { fileURLToPath } from 'node:url';
 import { get, list, put } from '@vercel/blob';
 
 const questionsPath = fileURLToPath(new URL('../data/questions.json', import.meta.url));
+const bundledProgressPath = fileURLToPath(new URL('../data/progress.json', import.meta.url));
 const legacyProgressPath = 'mayuan/progress.json';
 const legacyHistoryPath = 'mayuan/history.json';
 const progressPrefix = 'mayuan/progress/';
 const historyPrefix = 'mayuan/history/';
+const githubProgressPath = 'data/progress.json';
 let cachedQuestions = null;
 
 export function sendJson(res, status, body) {
@@ -60,6 +62,74 @@ async function readJsonBlob(path, fallback) {
   }
 }
 
+function githubConfig() {
+  const token = process.env.GITHUB_PROGRESS_TOKEN || process.env.GITHUB_TOKEN || '';
+  const owner = process.env.GITHUB_PROGRESS_OWNER || 'Stephen-creater';
+  const repo = process.env.GITHUB_PROGRESS_REPO || 'mayuan-quiz';
+  const branch = process.env.GITHUB_PROGRESS_BRANCH || 'main';
+  return token ? { token, owner, repo, branch } : null;
+}
+
+async function githubRequest(config, path, options = {}) {
+  const response = await fetch(`https://api.github.com${path}`, {
+    ...options,
+    headers: {
+      Accept: 'application/vnd.github+json',
+      Authorization: `Bearer ${config.token}`,
+      'X-GitHub-Api-Version': '2022-11-28',
+      'User-Agent': 'mayuan-quiz-sync',
+      ...(options.headers || {}),
+    },
+  });
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`GitHub ${response.status}: ${text}`);
+  }
+  return response.json();
+}
+
+function decodeGitHubContent(content) {
+  return Buffer.from(String(content || '').replace(/\s/g, ''), 'base64').toString('utf8');
+}
+
+async function readGitHubProgress() {
+  const config = githubConfig();
+  if (!config) return null;
+  const data = await githubRequest(
+    config,
+    `/repos/${config.owner}/${config.repo}/contents/${githubProgressPath}?ref=${encodeURIComponent(config.branch)}`,
+  );
+  return normalizeProgress(JSON.parse(decodeGitHubContent(data.content)));
+}
+
+async function writeGitHubProgress(progress) {
+  const config = githubConfig();
+  if (!config) return false;
+  const current = await githubRequest(
+    config,
+    `/repos/${config.owner}/${config.repo}/contents/${githubProgressPath}?ref=${encodeURIComponent(config.branch)}`,
+  );
+  const content = Buffer.from(`${JSON.stringify(normalizeProgress(progress), null, 2)}\n`, 'utf8').toString('base64');
+  await githubRequest(config, `/repos/${config.owner}/${config.repo}/contents/${githubProgressPath}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      message: 'Update quiz progress',
+      content,
+      sha: current.sha,
+      branch: config.branch,
+    }),
+  });
+  return true;
+}
+
+function readBundledProgress() {
+  try {
+    return normalizeProgress(JSON.parse(fs.readFileSync(bundledProgressPath, 'utf8')));
+  } catch {
+    return emptyProgress();
+  }
+}
+
 async function writeJsonBlob(path, value) {
   await put(path, JSON.stringify(value), {
     access: 'private',
@@ -89,12 +159,22 @@ async function readLatestJsonBlob(prefix, fallback) {
 }
 
 export async function readProgress() {
+  const githubProgress = await readGitHubProgress();
+  if (githubProgress) return githubProgress;
+
   const snapshot = await readLatestJsonBlob(progressPrefix, null);
   if (snapshot) return normalizeProgress(snapshot);
-  return normalizeProgress(await readJsonBlob(legacyProgressPath, emptyProgress()));
+  try {
+    return normalizeProgress(await readJsonBlob(legacyProgressPath, readBundledProgress()));
+  } catch (error) {
+    if (/403|Forbidden|suspended/i.test(error.message)) return readBundledProgress();
+    throw error;
+  }
 }
 
 export async function writeProgress(progress) {
+  if (await writeGitHubProgress(progress)) return;
+
   const path = `${progressPrefix}${Date.now()}-${randomUUID()}.json`;
   await writeJsonBlob(path, normalizeProgress(progress));
 }
@@ -112,7 +192,11 @@ export async function readHistory(limit = 50) {
 
 export async function recordHistory(event) {
   const path = `${historyPrefix}${Date.now()}-${randomUUID()}.json`;
-  await writeJsonBlob(path, event);
+  try {
+    await writeJsonBlob(path, event);
+  } catch (error) {
+    if (!/suspended|403|Forbidden/i.test(error.message)) throw error;
+  }
 }
 
 export function bodyOf(req) {
