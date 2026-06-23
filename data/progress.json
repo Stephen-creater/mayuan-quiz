@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-23T03:03:48.652Z",
+  "updatedAt": "2026-06-23T03:05:33.853Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -3869,6 +3869,16 @@
       "lastAnswer": "C",
       "lastCorrect": true,
       "lastAt": "2026-06-23T03:03:46.623Z",
+      "marked": false
+    },
+    "人类社会及其发展规律__经济基础、上层建筑、国家和法律__单选题100": {
+      "attempts": 1,
+      "correctAttempts": 1,
+      "wrongCount": 0,
+      "views": 0,
+      "lastAnswer": "B",
+      "lastCorrect": true,
+      "lastAt": "2026-06-23T03:05:33.853Z",
       "marked": false
     }
   },
