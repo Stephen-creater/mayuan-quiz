@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-23T05:46:03.399Z",
+  "updatedAt": "2026-06-23T05:46:21.019Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -4267,6 +4267,16 @@
       "lastAnswer": "B",
       "lastCorrect": true,
       "lastAt": "2026-06-23T05:45:59.735Z",
+      "marked": false
+    },
+    "资本主义的本质及规律__资本主义政治制度、法律和意识形态__单选题94": {
+      "attempts": 1,
+      "correctAttempts": 1,
+      "wrongCount": 0,
+      "views": 0,
+      "lastAnswer": "C",
+      "lastCorrect": true,
+      "lastAt": "2026-06-23T05:46:21.019Z",
       "marked": false
     }
   },
