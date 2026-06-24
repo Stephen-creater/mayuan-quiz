@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-24T15:08:35.647Z",
+  "updatedAt": "2026-06-24T15:09:11.711Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -1554,13 +1554,13 @@
       "markedAt": null
     },
     "世界的物质性及发展规律__量变质变、辩证否定和发展环节__单选题72": {
-      "attempts": 2,
+      "attempts": 3,
       "correctAttempts": 1,
-      "wrongCount": 1,
+      "wrongCount": 2,
       "views": 2,
-      "lastAnswer": "C",
-      "lastCorrect": true,
-      "lastAt": "2026-06-22T03:42:49.940Z",
+      "lastAnswer": "A",
+      "lastCorrect": false,
+      "lastAt": "2026-06-24T15:09:11.711Z",
       "marked": true,
       "markedAt": "2026-06-22T03:38:10.943Z"
     },
