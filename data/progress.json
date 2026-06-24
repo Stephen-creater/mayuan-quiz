@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-24T15:05:21.464Z",
+  "updatedAt": "2026-06-24T15:05:49.753Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -278,13 +278,13 @@
       "markedAt": null
     },
     "世界的物质性及发展规律__哲学基本问题与唯物主义、唯心主义__单选题233": {
-      "attempts": 5,
-      "correctAttempts": 3,
+      "attempts": 6,
+      "correctAttempts": 4,
       "wrongCount": 2,
       "views": 17,
       "lastAnswer": "B",
       "lastCorrect": true,
-      "lastAt": "2026-06-22T03:17:40.873Z",
+      "lastAt": "2026-06-24T15:05:49.753Z",
       "marked": true,
       "markedAt": "2026-06-22T02:21:24.743Z"
     },
