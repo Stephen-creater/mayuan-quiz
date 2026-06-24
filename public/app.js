@@ -108,9 +108,6 @@ async function api(path, options = {}, retries = 2) {
     ...options,
     headers,
   };
-  if (requestOptions.method && requestOptions.method !== 'GET' && requestOptions.keepalive === undefined) {
-    requestOptions.keepalive = true;
-  }
   const response = await fetch(path, requestOptions);
   if (response.status === 401 && retries > 0) {
     localStorage.removeItem(syncTokenKey);
@@ -135,6 +132,20 @@ function record(type, payload = {}, questionId = null) {
   }
   renderSummary();
   return event;
+}
+
+async function recordStrict(type, payload = {}, questionId = null) {
+  await saveQueue.catch(() => {});
+  const result = await api('/api/event', {
+    method: 'POST',
+    body: JSON.stringify({ type, payload, questionId }),
+  });
+  state.progress = result.progress;
+  lastSavedAt = result.event.at;
+  const time = new Date(result.event.at).toLocaleTimeString('zh-CN', { hour12: false });
+  els.saveStatus.textContent = `已保存 ${time}`;
+  renderSummary();
+  return result.event;
 }
 
 function progressOf(id) {
@@ -581,6 +592,8 @@ function renderQuestion() {
   els.markButton.classList.toggle('is-marked', progress.marked);
   els.resultBox.className = 'result hidden';
   els.resultBox.innerHTML = '';
+  els.submitButton.disabled = false;
+  els.submitButton.textContent = '提交';
   els.submitButton.classList.remove('hidden');
   els.nextButton.classList.add('hidden');
   renderNavigator();
@@ -698,7 +711,18 @@ function selectedAnswer(question) {
 async function submitAnswer() {
   const question = state.currentList[state.index];
   if (!question || !state.selected.length) return;
-  const event = await record('answer-question', cursorPayload({ selected: state.selected }), question.id);
+  els.submitButton.disabled = true;
+  els.submitButton.textContent = '提交中...';
+  let event;
+  try {
+    event = await recordStrict('answer-question', cursorPayload({ selected: state.selected }), question.id);
+  } catch (error) {
+    console.error(error);
+    els.submitButton.disabled = false;
+    els.submitButton.textContent = '提交';
+    els.saveStatus.textContent = '提交失败，请再点一次';
+    return;
+  }
   const correct = event.correct;
   const answer = selectedAnswer(question);
   els.resultBox.className = `result ${correct ? 'good' : 'bad'}`;
