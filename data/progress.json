@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-24T08:23:28.331Z",
+  "updatedAt": "2026-06-24T15:00:03.510Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -25,13 +25,13 @@
       "markedAt": null
     },
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题129": {
-      "attempts": 1,
+      "attempts": 2,
       "correctAttempts": 0,
-      "wrongCount": 1,
+      "wrongCount": 2,
       "views": 2,
-      "lastAnswer": "C",
+      "lastAnswer": "B",
       "lastCorrect": false,
-      "lastAt": "2026-06-21T11:27:28.916Z",
+      "lastAt": "2026-06-24T15:00:03.510Z",
       "marked": false,
       "markedAt": null
     },
