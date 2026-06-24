@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-24T15:27:09.355Z",
+  "updatedAt": "2026-06-24T15:27:23.580Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -4016,13 +4016,13 @@
       "markedAt": "2026-06-23T04:43:34.352Z"
     },
     "人类社会及其发展规律__社会基本矛盾、改革、革命和阶级斗争__单选题213": {
-      "attempts": 2,
+      "attempts": 3,
       "correctAttempts": 1,
-      "wrongCount": 1,
+      "wrongCount": 2,
       "views": 0,
-      "lastAnswer": "D",
-      "lastCorrect": true,
-      "lastAt": "2026-06-23T04:55:34.639Z",
+      "lastAnswer": "B",
+      "lastCorrect": false,
+      "lastAt": "2026-06-24T15:27:23.580Z",
       "marked": true,
       "markedAt": "2026-06-23T04:44:54.801Z"
     },
