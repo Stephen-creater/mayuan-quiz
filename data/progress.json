@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-24T15:04:33.448Z",
+  "updatedAt": "2026-06-24T15:04:49.365Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -245,13 +245,13 @@
       "markedAt": null
     },
     "世界的物质性及发展规律__意识的起源、本质和能动作用__多选题21": {
-      "attempts": 4,
+      "attempts": 5,
       "correctAttempts": 2,
-      "wrongCount": 2,
+      "wrongCount": 3,
       "views": 19,
-      "lastAnswer": "BD",
-      "lastCorrect": true,
-      "lastAt": "2026-06-22T02:35:30.726Z",
+      "lastAnswer": "AB",
+      "lastCorrect": false,
+      "lastAt": "2026-06-24T15:04:49.365Z",
       "marked": false,
       "markedAt": null
     },
