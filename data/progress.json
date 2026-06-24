@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-24T15:08:14.169Z",
+  "updatedAt": "2026-06-24T15:08:22.993Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -1466,13 +1466,13 @@
       "markedAt": null
     },
     "世界的物质性及发展规律__矛盾分析法__单选题405": {
-      "attempts": 2,
-      "correctAttempts": 1,
+      "attempts": 3,
+      "correctAttempts": 2,
       "wrongCount": 1,
       "views": 2,
       "lastAnswer": "B",
       "lastCorrect": true,
-      "lastAt": "2026-06-22T03:36:45.709Z",
+      "lastAt": "2026-06-24T15:08:22.993Z",
       "marked": true,
       "markedAt": "2026-06-22T03:35:06.886Z"
     },
