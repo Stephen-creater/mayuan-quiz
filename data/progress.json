@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-24T15:06:05.828Z",
+  "updatedAt": "2026-06-24T15:06:17.326Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -729,13 +729,13 @@
       "markedAt": null
     },
     "世界的物质性及发展规律__物质、运动、时空和世界物质统一性__单选题306": {
-      "attempts": 2,
-      "correctAttempts": 1,
+      "attempts": 3,
+      "correctAttempts": 2,
       "wrongCount": 1,
       "views": 3,
       "lastAnswer": "B",
       "lastCorrect": true,
-      "lastAt": "2026-06-22T03:17:06.119Z",
+      "lastAt": "2026-06-24T15:06:17.326Z",
       "marked": true,
       "markedAt": "2026-06-22T02:43:29.675Z"
     },
