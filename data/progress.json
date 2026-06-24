@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-24T15:28:54.107Z",
+  "updatedAt": "2026-06-24T15:29:16.587Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -4109,13 +4109,13 @@
       "marked": false
     },
     "人类社会及其发展规律__人民群众、个人作用和群众路线__单选题375": {
-      "attempts": 1,
+      "attempts": 2,
       "correctAttempts": 0,
-      "wrongCount": 1,
+      "wrongCount": 2,
       "views": 0,
       "lastAnswer": "B",
       "lastCorrect": false,
-      "lastAt": "2026-06-23T05:19:20.009Z",
+      "lastAt": "2026-06-24T15:29:16.587Z",
       "marked": false
     },
     "人类社会及其发展规律__社会条件、自然环境、人口和文明文化__单选题50": {
