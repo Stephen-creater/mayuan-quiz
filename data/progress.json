@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-24T15:29:16.587Z",
+  "updatedAt": "2026-06-24T15:29:38.247Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -4115,8 +4115,9 @@
       "views": 0,
       "lastAnswer": "B",
       "lastCorrect": false,
-      "lastAt": "2026-06-24T15:29:16.587Z",
-      "marked": false
+      "lastAt": "2026-06-24T15:29:38.247Z",
+      "marked": true,
+      "markedAt": "2026-06-24T15:29:38.247Z"
     },
     "人类社会及其发展规律__社会条件、自然环境、人口和文明文化__单选题50": {
       "attempts": 1,
