@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-24T15:12:04.664Z",
+  "updatedAt": "2026-06-24T15:12:17.510Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -1796,13 +1796,13 @@
       "markedAt": "2026-06-22T03:47:46.209Z"
     },
     "世界的物质性及发展规律__辩证思维方法和成对范畴__单选题278": {
-      "attempts": 2,
+      "attempts": 3,
       "correctAttempts": 1,
-      "wrongCount": 1,
+      "wrongCount": 2,
       "views": 2,
-      "lastAnswer": "B",
-      "lastCorrect": true,
-      "lastAt": "2026-06-22T10:11:37.212Z",
+      "lastAnswer": "C",
+      "lastCorrect": false,
+      "lastAt": "2026-06-24T15:12:17.510Z",
       "marked": true,
       "markedAt": "2026-06-22T03:48:20.277Z"
     },
