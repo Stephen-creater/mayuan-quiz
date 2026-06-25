@@ -4,6 +4,16 @@
 
 这个仓库的目标不是做一个花哨的题库平台，而是保留一套可以直接复用和二次修改的高效备考工具：打开即可刷题，每次作答、切题、标记和错误次数都会被记录。本地运行时写入本机文件；部署到 Vercel 后，手机和电脑可以通过同一个网址同步进度。
 
+## 在线入口
+
+当前可直接使用的线上刷题网址：
+
+```text
+https://mayuan-quiz-ten.vercel.app/
+```
+
+以后回顾这个项目时，可以从本仓库了解完整代码、题库、部署方式和进度同步方案；日常刷题直接打开上面的线上网址。
+
 ## 功能
 
 - 章节与专题树状导航。
@@ -93,7 +103,7 @@ data/questions.json
 
    任意现代浏览器即可，例如 Chrome、Safari、Edge。
 
-本地单机刷题不需要数据库，不需要 Redis，不需要安装前端依赖。在线同步需要一个 Vercel 账号和 Vercel Blob 存储。
+本地单机刷题不需要数据库，不需要 Redis，不需要安装前端依赖。在线同步需要一个 Vercel 账号，以及一个用于写入 `data/progress.json` 的 GitHub token。
 
 ## 快速启动
 
@@ -217,6 +227,12 @@ npm run deploy
 
 ```text
 https://your-project.vercel.app
+```
+
+当前项目的生产网址是：
+
+```text
+https://mayuan-quiz-ten.vercel.app/
 ```
 
 ### 导入已有本地进度
