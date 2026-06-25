@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-25T01:52:32.737Z",
+  "updatedAt": "2026-06-25T01:52:40.418Z",
   "questions": {
     "导论-马克思主义总论__马克思主义的创立、组成和鲜明特征__单选题13": {
       "attempts": 1,
@@ -5866,13 +5866,13 @@
       "marked": false
     },
     "单选补充题__原题库低优先级单选汇总__单选补充0700": {
-      "attempts": 6,
-      "correctAttempts": 3,
+      "attempts": 7,
+      "correctAttempts": 4,
       "wrongCount": 3,
       "views": 0,
       "lastAnswer": "D",
       "lastCorrect": true,
-      "lastAt": "2026-06-24T03:29:13.411Z",
+      "lastAt": "2026-06-25T01:52:40.418Z",
       "marked": true,
       "markedAt": "2026-06-24T03:06:31.572Z"
     },
